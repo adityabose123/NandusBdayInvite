@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanditha's Birthday Soiree 🎉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandYellow: '#FFE600',
+                        brandPink: '#FF5E97',
+                        brandPurple: '#A259FF',
+                        brandCyan: '#00F0FF',
+                        brandGreen: '#00E676',
+                        brandDark: '#121212',
+                    },
+                    fontFamily: {
+                        sans: ['Fredoka', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neo': '5px 5px 0px 0px #121212',
+                        'neo-lg': '8px 8px 0px 0px #121212',
+                        'neo-xl': '12px 12px 0px 0px #121212',
+                        'neo-hover': '2px 2px 0px 0px #121212',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF8F5;
+            color: #121212;
+            overflow-x: hidden;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .border-neo {
+            border: 3.5px solid #121212;
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 16s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Floating Meme Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
+        }
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .floating-delayed {
+            animation: float 5s ease-in-out infinite 2s;
+        }
+
+        /* Wiggle Button Animation */
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .wiggle-hover:hover {
+            animation: wiggle 0.25s infinite alternate;
+        }
+
+        /* Equalizer Bar Animation */
+        .eq-bar {
+            animation: bounce-eq 0.8s ease-in-out infinite alternate;
+        }
+        @keyframes bounce-eq {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE600;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #121212;
+            border-radius: 0px;
+        }
+    </style>
+</head>
+<body class="selection:bg-brandPink selection:text-white pb-16">
+
+    <div class="bg-brandYellow border-b-4 border-brandDark py-2 marquee-container font-black text-lg uppercase tracking-wider">
+        <div class="marquee-content flex gap-8">
+            <span>🎉 Nanditha turns 21 with 4 years of experience!</span>
+            <span>✨ Lowkey Vibes Only</span>
+            <span>🍾 Cheap Shit Alcohol Served</span>
+            <span>🍕 Miljayega Kuch Food</span>
+            <span>📍 Tilak Nagar Circle</span>
+            <span>🎉 Nanditha turns 21 with 4 years of experience!</span>
+            <span>✨ Lowkey Vibes Only</span>
+            <span>🍾 Cheap Shit Alcohol Served</span>
+            <span>🍕 Miljayega Kuch Food</span>
+            <span>📍 Tilak Nagar Circle</span>
+        </div>
+    </div>
+
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+        <button id="soundToggleBtn" onclick="toggleAudio()" class="bg-brandCyan border-neo shadow-neo p-3 rounded-2xl flex items-center gap-2 font-bold hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-hover transition-all cursor-pointer">
+            <div id="eqBars" class="flex items-end gap-1 h-5 hidden">
+                <span class="eq-bar w-1 bg-brandDark rounded-full" style="animation-delay: 0.1s"></span>
+                <span class="eq-bar w-1 bg-brandDark rounded-full" style="animation-delay: 0.4s"></span>
+                <span class="eq-bar w-1 bg-brandDark rounded-full" style="animation-delay: 0.2s"></span>
+                <span class="eq-bar w-1 bg-brandDark rounded-full" style="animation-delay: 0.6s"></span>
+            </div>
+            <i id="soundIcon" class="fa-solid fa-music text-xl"></i>
+            <span id="soundText" class="text-sm font-black hidden sm:inline">PARTY BEATS</span>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 pt-8">
+
+        <header class="relative bg-brandPink border-neo shadow-neo-xl rounded-3xl p-6 md:p-10 text-center mb-10 overflow-hidden">
+            <!-- Decorative Floating Stickers -->
+            <div class="absolute top-3 left-4 bg-brandYellow border-neo px-3 py-1 rounded-full font-black text-xs md:text-sm -rotate-12 floating">
+                21 (+4 Exp) 🎂
+            </div>
+            <div class="absolute bottom-4 right-4 bg-brandCyan border-neo px-3 py-1 rounded-full font-black text-xs md:text-sm rotate-6 floating-delayed">
+                Tonight @ Midnight! 🕛
+            </div>
+
+            <div class="inline-block bg-white border-neo px-6 py-2 rounded-2xl shadow-neo font-black text-xs md:text-sm uppercase tracking-widest mb-4">
+                You Are Officially Invited!
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight uppercase drop-shadow-[0_4px_0_#121212] mb-3">
+                Nanditha's <br class="hidden sm:inline">Birthday Soiree
+            </h1>
+
+            <p class="text-lg md:text-2xl font-bold text-brandDark bg-brandYellow inline-block border-neo px-4 py-2 rounded-xl shadow-neo -rotate-1 my-2">
+                "Finally turning 21 with 4 years of experience 🤫✨"
+            </p>
+
+            <div class="mt-6 flex flex-wrap justify-center gap-4">
+                <button onclick="triggerConfetti()" class="bg-brandGreen border-neo shadow-neo px-6 py-3 rounded-2xl font-black text-lg hover:bg-emerald-300 active:translate-y-1 active:shadow-none transition-all cursor-pointer wiggle-hover flex items-center gap-2">
+                    <i class="fa-solid fa-burst"></i> Pop Party Poppers!
+                </button>
+                <a href="#rsvp" class="bg-brandYellow border-neo shadow-neo px-6 py-3 rounded-2xl font-black text-lg hover:bg-yellow-300 active:translate-y-1 active:shadow-none transition-all cursor-pointer flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Jump to RSVP
+                </a>
+            </div>
+        </header>
+
+        <section class="bg-brandDark text-white border-neo shadow-neo-lg rounded-3xl p-6 md:p-8 mb-10 text-center">
+            <h2 class="text-2xl md:text-3xl font-black text-brandYellow mb-4 uppercase tracking-wide">
+                ⏳ Party Countdown (Or Time Left To Escape)
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-brandPurple border-neo p-4 rounded-2xl text-center">
+                    <span id="days" class="block text-4xl sm:text-5xl font-black">00</span>
+                    <span class="text-xs sm:text-sm font-bold uppercase">Days</span>
+                </div>
+                <div class="bg-brandPink border-neo p-4 rounded-2xl text-center">
+                    <span id="hours" class="block text-4xl sm:text-5xl font-black">00</span>
+                    <span class="text-xs sm:text-sm font-bold uppercase">Hours</span>
+                </div>
+                <div class="bg-brandCyan border-neo text-brandDark p-4 rounded-2xl text-center">
+                    <span id="minutes" class="block text-4xl sm:text-5xl font-black">00</span>
+                    <span class="text-xs sm:text-sm font-bold uppercase">Minutes</span>
+                </div>
+                <div class="bg-brandYellow border-neo text-brandDark p-4 rounded-2xl text-center">
+                    <span id="seconds" class="block text-4xl sm:text-5xl font-black">00</span>
+                    <span class="text-xs sm:text-sm font-bold uppercase">Seconds</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+            <!-- Card 1: Address -->
+            <div class="bg-white border-neo shadow-neo rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between hover:shadow-neo-lg transition-all">
+                <div>
+                    <div class="w-12 h-12 bg-brandYellow border-neo rounded-2xl flex items-center justify-center text-2xl font-black mb-4">
+                        📍
+                    </div>
+                    <h3 class="text-2xl font-black mb-2 uppercase">The Secret Location</h3>
+                    <p class="text-xl font-bold text-gray-800 mb-4 bg-yellow-100 border-neo p-3 rounded-xl">
+                        "Tilak Nagar Circle ke aas paas 📍"
+                    </p>
+                    <p class="text-sm font-bold text-gray-600 mb-6">
+                        Exact location will be revealed 10 minutes before the event depending on venue availability and mood.
+                    </p>
+                </div>
+                <button onclick="openFunnyMapModal()" class="w-full bg-brandCyan border-neo shadow-neo py-3 rounded-xl font-black text-brandDark hover:bg-cyan-300 transition-all cursor-pointer flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i> Dhoond ke dikhao / Find Location
+                </button>
+            </div>
+
+            <!-- Card 2: Theme -->
+            <div class="bg-white border-neo shadow-neo rounded-3xl p-6 flex flex-col justify-between hover:shadow-neo-lg transition-all">
+                <div>
+                    <div class="w-12 h-12 bg-brandPurple text-white border-neo rounded-2xl flex items-center justify-center text-2xl font-black mb-4">
+                        🤫
+                    </div>
+                    <h3 class="text-2xl font-black mb-2 uppercase">Party Theme</h3>
+                    <p class="text-xl font-bold text-brandPurple mb-4 bg-purple-100 border-neo p-3 rounded-xl">
+                        "Lowkey" 🕶️
+                    </p>
+                    <p class="text-sm font-bold text-gray-600">
+                        No high-voltage drama. Low effort, maximum chill. Bring your normal self (or a disguised better version).
+                    </p>
+                </div>
+                <div class="mt-6 bg-purple-50 border-2 border-dashed border-purple-400 p-3 rounded-xl text-center font-bold text-xs">
+                    * Strictly no over-hyped influencers allowed without permission *
+                </div>
+            </div>
+
+            <!-- Card 3: Dresscode -->
+            <div class="bg-white border-neo shadow-neo rounded-3xl p-6 flex flex-col justify-between hover:shadow-neo-lg transition-all">
+                <div>
+                    <div class="w-12 h-12 bg-brandPink text-white border-neo rounded-2xl flex items-center justify-center text-2xl font-black mb-4">
+                        👕
+                    </div>
+                    <h3 class="text-2xl font-black mb-2 uppercase">Dresscode</h3>
+                    <p class="text-xl font-bold text-brandPink mb-4 bg-pink-100 border-neo p-3 rounded-xl">
+                        "Just be clothed 👕👗"
+                    </p>
+                    <p class="text-sm font-bold text-gray-600">
+                        (Strictly optional according to your fashion sense, but legally required by local law enforcement).
+                    </p>
+                </div>
+                <div class="mt-6 bg-pink-50 border-2 border-dashed border-pink-400 p-3 rounded-xl text-center font-bold text-xs">
+                    Pyjamas, Suits, or Superhero Costumes — Anything works.
+                </div>
+            </div>
+
+            <!-- Card 4: Booze & Food -->
+            <div class="bg-white border-neo shadow-neo rounded-3xl p-6 flex flex-col justify-between hover:shadow-neo-lg transition-all">
+                <div>
+                    <div class="w-12 h-12 bg-brandGreen border-neo rounded-2xl flex items-center justify-center text-2xl font-black mb-4">
+                        🍕
+                    </div>
+                    <h3 class="text-2xl font-black mb-2 uppercase">Booze & Food Menu</h3>
+                    <div class="space-y-3 mb-4">
+                        <div class="bg-emerald-100 border-neo p-3 rounded-xl">
+                            <span class="font-black text-emerald-900 block">🍾 BOOZE: "Cheap Shit"</span>
+                            <span class="text-xs font-bold text-emerald-700">(Bring your own extra if you value your liver!)</span>
+                        </div>
+                        <div class="bg-amber-100 border-neo p-3 rounded-xl">
+                            <span class="font-black text-amber-900 block">🍔 FOOD: "Miljayega kuch"</span>
+                            <span class="text-xs font-bold text-amber-700">(Don't come with Michelin star expectations)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-100 border-neo p-2 rounded-xl text-center font-bold text-xs">
+                    Tip: Eat before coming if you get hangry easily!
+                </div>
+            </div>
+
+        </section>
+
+        <section class="bg-brandYellow border-neo shadow-neo-lg rounded-3xl p-6 md:p-8 mb-10 text-center relative overflow-hidden">
+            <h2 class="text-3xl font-black mb-2 uppercase">🎈 Click to Pop Birthday Balloons!</h2>
+            <p class="font-bold text-sm mb-6">Pop all 5 balloons to unlock a secret birthday wish!</p>
+            
+            <div id="balloonContainer" class="flex flex-wrap justify-center gap-6 my-4">
+                <!-- Balloons rendered dynamically -->
+            </div>
+            
+            <div id="secretMessage" class="hidden mt-4 bg-white border-neo p-4 rounded-2xl font-black text-brandPink text-xl animate-bounce">
+                🎉 YOU POPPED THEM ALL! You are officially granted 1x Free Slice of Cake (if it doesn't drop on the floor)!
+            </div>
+        </section>
+
+        <section id="rsvp" class="bg-white border-neo shadow-neo-xl rounded-3xl p-6 md:p-10 mb-10">
+            <div class="text-center mb-8">
+                <span class="bg-brandPink text-white border-neo px-4 py-1 rounded-full font-black text-sm uppercase">RSVP Mandatory</span>
+                <h2 class="text-3xl md:text-5xl font-black mt-2 uppercase">Are You Showing Up?</h2>
+                <p class="text-gray-600 font-bold mt-1">Please respond before Nanditha changes her mind about inviting you.</p>
+            </div>
+
+            <form id="rsvpForm" onsubmit="handleRSVP(event)" class="space-y-6">
+                <div>
+                    <label class="block text-lg font-black mb-2 uppercase">Your Name (Or Alias)</label>
+                    <input type="text" id="guestName" required placeholder="e.g., Party Animal Paras" class="w-full bg-gray-50 border-neo p-4 rounded-2xl font-bold text-lg focus:outline-none focus:bg-yellow-50 focus:border-brandPurple transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-lg font-black mb-2 uppercase">Attendance Status</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 bg-green-50 border-neo rounded-2xl cursor-pointer hover:bg-green-100 transition-all">
+                            <input type="radio" name="attendance" value="100% Attendance Energy" required class="w-6 h-6 text-brandGreen accent-black">
+                            <span class="ml-3 font-bold text-lg">🔥 Attending with 100% attendance energy</span>
+                        </label>
+                        <label class="flex items-center p-4 bg-yellow-50 border-neo rounded-2xl cursor-pointer hover:bg-yellow-100 transition-all">
+                            <input type="radio" name="attendance" value="Will show up 2 hours late" class="w-6 h-6 accent-black">
+                            <span class="ml-3 font-bold text-lg">⏰ Will show up late (as usual)</span>
+                        </label>
+                        <label class="flex items-center p-4 bg-purple-50 border-neo rounded-2xl cursor-pointer hover:bg-purple-100 transition-all">
+                            <input type="radio" name="attendance" value="Only coming for Cheap Booze" class="w-6 h-6 accent-black">
+                            <span class="ml-3 font-bold text-lg">🍾 Only coming for the cheap booze & food</span>
+                        </label>
+                        <label class="flex items-center p-4 bg-red-50 border-neo rounded-2xl cursor-pointer hover:bg-red-100 transition-all">
+                            <input type="radio" name="attendance" value="Who is Nanditha?" class="w-6 h-6 accent-black">
+                            <span class="ml-3 font-bold text-lg">❓ Who is Nanditha? (Free food enthusiast)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-lg font-black mb-2 uppercase">Special Roast / Birthday Message for Nanditha</label>
+                    <textarea id="guestMessage" rows="3" placeholder="Write something sweet or roasted..." class="w-full bg-gray-50 border-neo p-4 rounded-2xl font-bold text-lg focus:outline-none focus:bg-yellow-50 focus:border-brandPurple transition-all"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brandGreen border-neo shadow-neo py-5 rounded-2xl font-black text-2xl uppercase hover:bg-emerald-300 active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+                    🚀 Confirm My Presence Now!
+                </button>
+            </form>
+
+            <!-- Success Message Box -->
+            <div id="rsvpSuccess" class="hidden bg-brandYellow border-neo p-6 rounded-2xl text-center space-y-4">
+                <div class="text-5xl">🎉</div>
+                <h3 class="text-3xl font-black uppercase">RSVP Received!</h3>
+                <p id="rsvpSummary" class="text-xl font-bold text-gray-800"></p>
+                <button onclick="resetRSVP()" class="bg-white border-neo px-6 py-2 rounded-xl font-black text-sm uppercase hover:bg-gray-100">
+                    Edit RSVP
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="mapModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-neo shadow-neo-xl rounded-3xl p-6 md:p-8 max-w-lg w-full text-center relative animate-bounce-in">
+            <button onclick="closeMapModal()" class="absolute top-4 right-4 w-10 h-10 bg-brandPink text-white border-neo rounded-full font-black text-xl hover:bg-pink-600">✕</button>
+            <div class="text-6xl mb-4">🗺️📍</div>
+            <h3 class="text-3xl font-black uppercase mb-2">Tilak Nagar Circle</h3>
+            <p class="font-bold text-gray-700 mb-6">
+                Google Maps GPS couldn't even pinpoint this level of lowkey party. Walk around Tilak Nagar Circle, look for cheap music sounds, and follow your nose!
+            </p>
+            <div class="bg-yellow-100 border-neo p-4 rounded-2xl font-bold mb-6 text-sm">
+                Pro Tip: If you get lost, just call Nanditha and ask "Bhai kahan aana hai?"
+            </div>
+            <button onclick="closeMapModal()" class="w-full bg-brandYellow border-neo shadow-neo py-3 rounded-xl font-black uppercase hover:bg-yellow-300">
+                Samajh Gaya / Got It!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Set Countdown Target Date to tonight at 12:00 AM (Start of tomorrow)
+        const targetDate = new Date();
+        targetDate.setHours(24, 0, 0, 0); // Sets time to midnight tonight (00:00:00 of tomorrow)
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(d).padStart(2, '0');
+                document.getElementById('hours').innerText = String(h).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+            } else {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Confetti Generator Function
+        function triggerConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#FFE600', '#FF5E97', '#A259FF', '#00F0FF', '#00E676']
+            });
+        }
+
+        // Pop Balloons Logic
+        const balloonColors = ['#FF5E97', '#FFE600', '#A259FF', '#00F0FF', '#00E676'];
+        let poppedCount = 0;
+
+        function createBalloons() {
+            const container = document.getElementById('balloonContainer');
+            container.innerHTML = '';
+            poppedCount = 0;
+            document.getElementById('secretMessage').classList.add('hidden');
+
+            for (let i = 0; i < 5; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = `w-16 h-20 rounded-full border-neo flex items-center justify-center font-black text-2xl cursor-pointer transform hover:scale-110 transition-all floating`;
+                balloon.style.backgroundColor = balloonColors[i % balloonColors.length];
+                balloon.style.animationDelay = `${i * 0.4}s`;
+                balloon.innerHTML = '🎈';
+
+                balloon.onclick = function() {
+                    balloon.style.transform = 'scale(0.0)';
+                    balloon.style.opacity = '0';
+                    setTimeout(() => { balloon.style.visibility = 'hidden'; }, 200);
+                    poppedCount++;
+                    playPopSound();
+
+                    if (poppedCount === 5) {
+                        document.getElementById('secretMessage').classList.remove('hidden');
+                        triggerConfetti();
+                    }
+                };
+                container.appendChild(balloon);
+            }
+        }
+        createBalloons();
+
+        // Synthesized Pop Sound Effect using Web Audio API (No external file needed)
+        function playPopSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.1);
+            } catch (e) {
+                console.log('Audio Context Error', e);
+            }
+        }
+
+        // Web Audio Synth for Ambient Party Vibe
+        let audioContext = null;
+        let isPlaying = false;
+        let timerLoop = null;
+
+        function toggleAudio() {
+            const eqBars = document.getElementById('eqBars');
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+
+            if (!isPlaying) {
+                isPlaying = true;
+                eqBars.classList.remove('hidden');
+                soundIcon.className = "fa-solid fa-volume-high text-xl";
+                soundText.innerText = "PLAYING BEATS";
+                startSynthBeats();
+            } else {
+                isPlaying = false;
+                eqBars.classList.add('hidden');
+                soundIcon.className = "fa-solid fa-music text-xl";
+                soundText.innerText = "PARTY BEATS";
+                if (timerLoop) clearInterval(timerLoop);
+            }
+        }
+
+        function startSynthBeats() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C Synth Chord
+            let step = 0;
+
+            timerLoop = setInterval(() => {
+                if (!isPlaying) return;
+                
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(notes[step % notes.length], audioContext.currentTime);
+
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start();
+                osc.stop(audioContext.currentTime + 0.25);
+
+                step++;
+            }, 300);
+        }
+
+        // Modal Functions
+        function openFunnyMapModal() {
+            document.getElementById('mapModal').classList.remove('hidden');
+        }
+
+        function closeMapModal() {
+            document.getElementById('mapModal').classList.add('hidden');
+        }
+
+        // RSVP Form Handler
+        function handleRSVP(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const message = document.getElementById('guestMessage').value;
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            const successBox = document.getElementById('rsvpSuccess');
+            const summary = document.getElementById('rsvpSummary');
+
+            summary.innerHTML = `Hey <span class="text-brandPink font-black">${name}</span>! Your response ("<span class="italic">${attendance}</span>") has been registered.<br><br> See you at Tilak Nagar Circle! 🎉`;
+            successBox.classList.remove('hidden');
+
+            triggerConfetti();
+        }
+
+        function resetRSVP() {
+            document.getElementById('rsvpForm').classList.remove('hidden');
+            document.getElementById('rsvpSuccess').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
